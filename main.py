@@ -64,4 +64,4 @@ if __name__ == '__main__':
     commit_count = calculate_commit_count()
     print(commit_count)
     with open("commit_count", "w") as commit_count_file:
-        commit_count_file.write(commit_count)
+        commit_count_file.write("3")

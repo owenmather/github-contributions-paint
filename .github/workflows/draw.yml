@@ -1,6 +1,5 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+# Calculates required commits for today based on image.text in repo and commits specified times
+name: Draw
 
 # Controls when the workflow will run
 on:
@@ -21,6 +20,9 @@ jobs:
         python-version: '3.10' 
     - id: gen_commit_count
       run: python main.py
+
+    - run: |
+        echo "## $(cat commit_count) commits expected today" >> $GITHUB_STEP_SUMMARY
 
     - name: Commit changes
       run: |
