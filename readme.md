@@ -11,7 +11,7 @@ This is determined by offset into `image.txt`
      
 2) Commits a bump the required times to [bump](bump) file and pushes to same repo  
    Requires a [PAT_TOKEN](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret) secret in the Actions workflow to push the changes  
-   Requires users GitHub configured as a secret for the Actions Workflow
+   Requires GitHub USERNAME configured as a secret for the Actions Workflow
 
 ## 🥼 Usage 
 
