@@ -26,7 +26,7 @@ jobs:
 
     - name: Commit changes
       run: |
-        git config --global user.name "GitHub Actions Bot"
+        git config --global user.name ${{ secrets.USERNAME }}
         git config --global user.email "username@users.noreply.github.com"
 
         git remote set-url origin https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}
