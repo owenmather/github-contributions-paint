@@ -3,6 +3,14 @@ import os
 
 INPUT_IMAGE_PATH = os.environ.get("INPUT_IMAGE_PATH", "image.txt")
 
+COMMIT_COUNT_MAP = {
+    0: 0,
+    1: 1,
+    2: 5,
+    3: 8,
+    4: 10
+}
+
 
 def hoist_nested_lists(lst):
     """ Takes a list of lists
@@ -16,7 +24,7 @@ def hoist_nested_lists(lst):
     return [list(a) for a in list(zip(*lst))]
 
 
-def calculate_commit_count() -> str:
+def calculate_commit_count() -> int:
     """
     Calculates the required commit count for today
     Using the data in the INPUT_IMAGE_PATH
@@ -51,12 +59,15 @@ def calculate_commit_count() -> str:
     offset = (current_day - file_begin_creating_date).days
 
     if offset < 0:
-        return "0"
+        return 0
 
     # Loop over the image to allow continuous printing. Starts drawing the image again after completion
     looped_offset = offset % len(img_data_ordered_str)
     # The commit count [more = darker color] required for this day is fetched and returned
     required_commit_count = img_data_ordered_str[looped_offset:looped_offset + 1]
+
+    # It appears colors on github contributions change every 3 commits so we scale up the commits here
+    required_commit_count = COMMIT_COUNT_MAP[int(required_commit_count)]
     return required_commit_count
 
 
@@ -64,4 +75,4 @@ if __name__ == '__main__':
     commit_count = calculate_commit_count()
     print(commit_count)
     with open("commit_count", "w") as commit_count_file:
-        commit_count_file.write("3")
+        commit_count_file.write(str(commit_count))
