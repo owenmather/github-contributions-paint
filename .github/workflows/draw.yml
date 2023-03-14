@@ -1,0 +1,35 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10' 
+    - id: gen_commit_count
+      run: python main.py
+
+    - name: Commit changes
+      run: |
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "username@users.noreply.github.com"
+        git remote remove origin
+        git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.repository.name }}
+        
+        seq $(cat commit_count) | xargs -I{} sh -c "date -Ins > bump && git add -v bump && git commit -m '[AUTOMATED] Bump' -- bump && sleep 1"
+        if ! git diff-index --quiet --cached HEAD -- bump; then
+          git push
+        fi
