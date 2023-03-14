@@ -32,6 +32,6 @@ jobs:
         git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.repository.name }}
         
         seq $(cat commit_count) | xargs -I{} sh -c "date -Ins > bump && git add -v bump && git commit -m '[AUTOMATED] Bump' -- bump && sleep 1"
-        if ! git diff-index --quiet --cached HEAD -- bump; then
+        if ! git diff --quiet HEAD origin/main -- bump; then
           git push
         fi
