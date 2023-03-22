@@ -11,11 +11,12 @@ This is determined by offset into `image.txt`
      
 2) Commits a bump the required times to [bump](bump) file and pushes to same repo  
    Requires a [PAT_TOKEN](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret) secret in the Actions workflow to push the changes  
-   Requires GitHub USERNAME configured as a secret for the Actions Workflow
+   Requires GitHub `USERNAME` configured as a secret for the Actions Workflow.  
+Requires GitHub `EMAIL` configured as actions secret.  
 
 ## 🥼 Usage 
 
-1: Clone the repo 
+1: Clone the repo   
 2: Set the required Actions secrets on the repo - [Steps here](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
 ```yaml
 PAT_TOKEN: Token with write permission for the repo
