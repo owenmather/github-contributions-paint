@@ -8,7 +8,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
   
 jobs:
   draw:
@@ -31,10 +31,9 @@ jobs:
       run: |
         git config --global user.name ${{ secrets.USERNAME }}
         git config --global user.email "username@users.noreply.github.com"
-
+        seq $(cat commit_count) | xargs -I{} sh -c "date -Ins > bump && git add -v bump && git commit -m '[AUTOMATED] Bump' -- bump && sleep 15"
         git remote set-url origin https://${{ secrets.USERNAME }}:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}
-        
-        seq $(cat commit_count) | xargs -I{} sh -c "date -Ins > bump && git add -v bump && git commit -m '[AUTOMATED] Bump' -- bump && sleep 10"
+
         if ! git diff --quiet HEAD origin/main -- bump; then
           git push
         fi
