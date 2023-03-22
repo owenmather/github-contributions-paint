@@ -41,7 +41,11 @@ def calculate_commit_count() -> int:
         # Convert the input date to a big str representing the output order
         img_data_ordered_str = "".join(["".join(x) for x in img_data_ordered])
 
-    image_created_date = datetime.datetime.fromtimestamp(os.path.getmtime(INPUT_IMAGE_PATH))
+    # File timestamps not kept on files in Git so we use get cli to fetch commit timestamp
+    # https://archive.kernel.org/oldwiki/git.wiki.kernel.org/index.php/Git_FAQ.html#Why_isn.27t_Git_preserving_modification_time_on_files.3F
+    image_created_timestamp = int(os.popen(f"git log -1 --format=%ct {INPUT_IMAGE_PATH}").read())
+    image_created_date = datetime.datetime.fromtimestamp(image_created_timestamp)
+
     print("image_created_date: ", image_created_date)
     # We use the file modified date timestamp for the expected image to calculate the start day to begin drawing
     # This is the closest Monday after the file created date
