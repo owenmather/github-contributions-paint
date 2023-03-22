@@ -42,7 +42,7 @@ def calculate_commit_count() -> int:
         img_data_ordered_str = "".join(["".join(x) for x in img_data_ordered])
 
     image_created_date = datetime.datetime.fromtimestamp(os.path.getmtime(INPUT_IMAGE_PATH))
-
+    print("image_created_date: ", image_created_date)
     # We use the file modified date timestamp for the expected image to calculate the start day to begin drawing
     # This is the closest Monday after the file created date
     # Monday == 0 ... Sunday == 6
