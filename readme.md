@@ -20,7 +20,8 @@ Requires GitHub `EMAIL` configured as actions secret.
 2: Set the required Actions secrets on the repo - [Steps here](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
 ```yaml
 PAT_TOKEN: Token with write permission for the repo
-USERNAME:  Must match the GitHub Username for the User
+USERNAME:  Must match the GitHub Username for the User. 
+EMAIL: Email for GitHub User
 ``` 
 3: Generate an image using the `painter.py` file. _Details below_  
 4: Commit & Push the required image to the repository  
