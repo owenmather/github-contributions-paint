@@ -47,17 +47,17 @@ def calculate_commit_count() -> int:
     # This is the closest Monday after the file created date
     # Monday == 0 ... Sunday == 6
     file_created_day = image_created_date.weekday()
-
+    print("file_created_day: ", file_created_day)
     # We always start at Monday. If this file was created on a Monday we always wait until the following Monday to
     # being to
     # Ensure image is drawn correctly
     days_before_file_create_began = 7 - file_created_day
     file_begin_creating_date = (image_created_date + datetime.timedelta(days=days_before_file_create_began)).date()
-
+    print("Starting file creation on: ", file_begin_creating_date)
     # file_begin_creating_date is the date we expect output via commits to begin
     # Get the distance between today and that date
     offset = (current_day - file_begin_creating_date).days
-
+    print("Offset: ", offset)
     if offset < 0:
         return 0
 
@@ -65,7 +65,7 @@ def calculate_commit_count() -> int:
     looped_offset = offset % len(img_data_ordered_str)
     # The commit count [more = darker color] required for this day is fetched and returned
     required_commit_count = img_data_ordered_str[looped_offset:looped_offset + 1]
-
+    print("required_commit_count: ", required_commit_count)
     # It appears colors on github contributions change every 3 commits so we scale up the commits here
     required_commit_count = COMMIT_COUNT_MAP[int(required_commit_count)]
     return required_commit_count
