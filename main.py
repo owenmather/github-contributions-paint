@@ -28,7 +28,7 @@ def calculate_commit_count() -> int:
     """
     Calculates the required commit count for today
     Using the data in the INPUT_IMAGE_PATH
-    Always begins drawing on the first Monday after the file_last_updated timestamp of the INPUT_IMAGE_PATH
+    Always begins drawing on the first Sunday after the file_last_updated timestamp of the INPUT_IMAGE_PATH
     This is to ensure drawing begins on a top left square
     :return:
     """
@@ -48,14 +48,12 @@ def calculate_commit_count() -> int:
 
     print("image_created_date: ", image_created_date)
     # We use the file modified date timestamp for the expected image to calculate the start day to begin drawing
-    # This is the closest Monday after the file created date
+    # This is the closest Sunday after the file created date
     # Monday == 0 ... Sunday == 6
     file_created_day = image_created_date.weekday()
     print("file_created_day: ", file_created_day)
-    # We always start at Monday. If this file was created on a Monday we always wait until the following Monday to
-    # being to
-    # Ensure image is drawn correctly
-    days_before_file_create_began = 7 - file_created_day
+    # We always start at Sunday. If this file was created on a Sunday we always wait until the following Sunday to begin to Ensure image is drawn correctly
+    days_before_file_create_began = 7 - ((file_created_day + 1) % 7)
     file_begin_creating_date = (image_created_date + datetime.timedelta(days=days_before_file_create_began)).date()
     print("Starting file creation on: ", file_begin_creating_date)
     # file_begin_creating_date is the date we expect output via commits to begin
