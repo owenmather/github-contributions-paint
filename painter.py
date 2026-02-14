@@ -24,7 +24,7 @@ next_color = {
 class Painter:
     canvas: tkinter.Canvas
 
-    def __init__(self, margin=20, square_size=30, horizontal_squares=20, vertical_squares=7):
+    def __init__(self, margin=20, square_size=30, horizontal_squares=30, vertical_squares=7):
         self.MARGIN = margin
         self.SQUARE_SIZE = square_size
         self.HORIZONTAL_SQUARES = horizontal_squares
@@ -32,6 +32,7 @@ class Painter:
         self.HEIGHT = self.VERTICAL_SQUARES * self.SQUARE_SIZE + self.MARGIN * 2
         self.WIDTH = self.HORIZONTAL_SQUARES * self.SQUARE_SIZE + self.MARGIN * 2
         self.grid = []
+        self.drag_color = color1
 
     def get_square(self, event):
         return int((event.x - self.MARGIN) / self.SQUARE_SIZE) + ((int((event.y - self.MARGIN) / self.SQUARE_SIZE)) *
@@ -41,6 +42,14 @@ class Painter:
         target = self.get_square(event)
         color = next_color[self.canvas.itemconfig(self.grid[target])['fill'][-1]]
         self.canvas.itemconfig(self.grid[target], fill=color)
+        self.drag_color = color
+
+    def paint_square(self, event):
+        col = int((event.x - self.MARGIN) / self.SQUARE_SIZE)
+        row = int((event.y - self.MARGIN) / self.SQUARE_SIZE)
+        if 0 <= col < self.HORIZONTAL_SQUARES and 0 <= row < self.VERTICAL_SQUARES:
+            target = col + row * self.HORIZONTAL_SQUARES
+            self.canvas.itemconfig(self.grid[target], fill=self.drag_color)
 
     def clear_grid(self):
         for rect in self.grid:
@@ -77,9 +86,10 @@ class Painter:
                                                     ((i + 1) * self.SQUARE_SIZE) + self.MARGIN,
                                                     ((y + 1) * self.SQUARE_SIZE) + self.MARGIN,
                                                     fill=color0,
-                                                    outline=WHITE, tags="change_square_color")
+                                                    outline=WHITE)
                 self.grid.append(rect)
-                self.canvas.tag_bind('change_square_color', "<Button-1>", self.change_square_color)
+        self.canvas.bind("<Button-1>", self.change_square_color)
+        self.canvas.bind("<B1-Motion>", self.paint_square)
         # Code to add widgets will go here...
         self.canvas.pack()
         frame = tkinter.Frame(top)
